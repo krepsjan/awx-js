@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+    <link href="assets/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">    
+    <!-- bootstrap icons -->
+    <link rel="stylesheet" href="assets/bootstrap-icons.css" integrity="sha384-b6lVK+yci+bfDmaY1u0zE8YYJt0TZxLEAFyYSLHId4xoVvsrQu3INevFKo+Xir8e" crossorigin="anonymous">
+    <!-- font awesome icons -->
+    <link rel="stylesheet" href="assets/fontawesome/css/all.min.css">
+    <script defer src="assets/fontawesome/js/all.min.js"></script>
+    <!-- <link rel="stylesheet" href="assets/font-awesome.min.css"> -->
+    <script src="assets/jquery.min.js"></script>
+    <script type="module" src="script.js"></script>
+    <!-- FIXME - change to SA keycloak URL. -->
+    <script src="keycloak.js"></script>    
+    <script>
+
+        // Nesmi na konci byt /auth
+        // ale lze to pouzit i bez toho nastaveni. 
+        // pripadne se pak musi predat cesta k tomu keycloak.json
+        // const keycloak = new Keycloak('http://localhost:8080/myapp/keycloak.json');
+
+        const config = { url: 'https://10.35.125.159', realm: 'master', clientId: 'awxclient'};
+        function initKeycloak() {
+            //const keycloak = new Keycloak(); // tohle by fungovalo taky. Ale asi jen v pripade, ze jsou jak keycloak, tak 
+                                               // aplikace na stejnem serveru - localhost
+            const keycloak = new Keycloak(config);
+            keycloak.init({
+                onLoad: 'login-required',
+                checkLoginIframe: true,
+                checkLoginIframeInterval: 1,
+                pkceMethod: 'S256',
+                scope: 'openid email',
+
+                //onLoad: 'check-sso'
+            }).then(function(authenticated) {  // authenticated je boolean
+               // alert(authenticated ? 'authenticated' : 'not authenticated');                
+                console.log(keycloak); 
+                console.log(keycloak.tokenParsed.name);
+                $('#displayname').html(`Jste prihlasen jako: <b> ${keycloak.tokenParsed.name} </b>`);
+                // keycloak.tokenParsed.name - displayname
+                // keycloak.tokenParsed.preferred_username - username
+                // keycloak.tokenParsed.email - email
+                
+            }).catch(function() {
+                alert('failed to initialize');
+            });
+        }
+    </script>
+</head>
+
+<body onload="initKeycloak()">
+    <div class="container">
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script> -->
+    
+     
+
+    <div class="card" style="width: 60rem;">
+    <div class="card-body">
+    <h5 class="card-title">Fix me</h5>
+    <div id="displayname"></div>
+    <p>Stisknete tlacitko nize a postupujte podle zobrazenych instrukci.</p>
+
+
+    <p><button id="fixmebutton" type="button" class="btn btn-primary mr-1"> Fix ME </button></p>
+
+    <p><button id="testbutton" type="button" class="btn btn-primary mr-1"> TEST results </button></p>
+    
+
+    <div id="myresults"></div>
+    <div id="vysledky"></div>
+       <!-- <div id="workflow_status" class="alert alert-primary" role="alert"> <i class="fa fa-refresh fa-spin"></i>   Workflow <b>fixme-workflow-test</b> is pending </div> -->
+    </div>
+</div>
+</div>
+
+
+
+
+</body>
+
+</html>

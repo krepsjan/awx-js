@@ -1,0 +1,62 @@
+Pro lepší představu, jak je workflow rozsáhlý, mohl by se vypisovat udaj o tom,
+kolik je v template nodů.
+
+https://awx.ciirc.cvut.cz/api/v2/workflow_job_templates/9/workflow_nodes/
+
+V popisu jobu je i to, jak se maji nody provadet, tedy jake jsou pro succes, failure a always.
+Nejakou rekurzi by to asi slo projit, ale to se mi zda zbytecne. 
+
+
+            "id": 9,
+            "type": "workflow_job_template_node",
+            "url": "/api/v2/workflow_job_template_nodes/9/",
+            "related": {
+                "labels": "/api/v2/workflow_job_template_nodes/9/labels/",
+                "credentials": "/api/v2/workflow_job_template_nodes/9/credentials/",
+                "instance_groups": "/api/v2/workflow_job_template_nodes/9/instance_groups/",
+                "create_approval_template": "/api/v2/workflow_job_template_nodes/9/create_approval_template/",
+                "success_nodes": "/api/v2/workflow_job_template_nodes/9/success_nodes/",
+                "failure_nodes": "/api/v2/workflow_job_template_nodes/9/failure_nodes/",
+                "always_nodes": "/api/v2/workflow_job_template_nodes/9/always_nodes/",
+                "unified_job_template": "/api/v2/job_templates/14/",
+                "workflow_job_template": "/api/v2/workflow_job_templates/9/"
+            },
+            "summary_fields": {
+                "workflow_job_template": {
+                    "id": 9,
+                    "name": "fixme-workflow-test",
+                    "description": ""
+                },
+                "unified_job_template": {
+                    "id": 14,
+                    "name": "check network",
+                    "description": "Selhal test DNS resolvingu",
+                    "unified_job_type": "job"
+                }
+            },
+            "created": "2023-06-28T16:10:21.629861Z",
+            "modified": "2023-06-28T16:10:21.629876Z",
+            "extra_data": {},
+            "inventory": null,
+            "scm_branch": null,
+            "job_type": null,
+            "job_tags": null,
+            "skip_tags": null,
+            "limit": null,
+            "diff_mode": null,
+            "verbosity": null,
+            "execution_environment": null,
+            "forks": null,
+            "job_slice_count": null,
+            "timeout": null,
+            "workflow_job_template": 9,
+            "unified_job_template": 14,
+            "success_nodes": [],
+            "failure_nodes": [],
+            "always_nodes": [
+                7
+            ],
+            "all_parents_must_converge": false,
+            "identifier": "5b451050-1a81-42ac-a10a-410790adc9ae"
+        }
+    ]

@@ -1,0 +1,47 @@
+
+# Spusti se workflow job template s nejakym ID, napr 9. To je staticke.
+# Toto volani vrati  ID beziciho jobu, napr 665
+https://awx.ciirc.cvut.cz/api/v2/workflow_job_templates/9/launch/
+
+# job ma vzdy nejaky status, napr. bud pending, nebo running. 
+# musime proto pravidelne poolovat API, abychom zjistili, v jakem stavu job
+# prave je a hlavne v jakem stavu jsou jeho dilci tasky. 
+
+# dotaz na stav workflow jobu se provadi opakovane tak dlouho, 
+# dokud neni failed, nebo successful
+https://awx.ciirc.cvut.cz/api/v2/workflow_jobs/665/
+    # Dokud tedy vyse uvedeny workflow job neni dokonceny
+    # vola se opakovane api, ktere vrati jeho dilci vysledky. 
+    https://awx.ciirc.cvut.cz/api/v2/unified_jobs/?unified_job_node__workflow_job=665&order_by=finished&status__in=running,pending,successful,failed,error,waiting
+    # Navratovou hodnotou je pole, ktere se postupne zvetsuje, jak se spousti
+    # jednotlive joby ve workflow. Toto pole se pak predava ke zpracovani
+    # procerdure handleData(jobs_array)
+
+    # handleData(array) je closura, ktera zapouzdruje citac vysledku, podle ktereho
+    # se sleduje, zda se pocet vysledku v poli zvysil. 
+    # Uvnitr handleData(array) se kontroluje, ze se bud
+    #   a) pocet vysledku zvysil - pak se prida novy div do vysledku
+    #   b) nebo se zmenil status posledniho vysledku
+    # DING, DING - tady je ta CHYBA, protoze kdyz bezi dva a vice tasku soucasne
+    # tak se zmeni status jen toho posledniho a druhy/ostatni, mohou zustat 
+    # neupdatovane. Tedy musim opravit funkci handleDataCallback()
+    
+    # Funkce, ktere pridavaji divy do stranky jsou metodami objektu results
+    # a opet delaji asynchronni dotazy do API, aby ziskaly detaily k danemu
+    # jobu. To je dulezite zejmena v pripade failnutych jobu, protoze
+    # potrebujeme znat duvod, proc failnuly a ten vypsat operatorovi. 
+
+
+# dotaz na stav jobu, ktere tento workflow postupne spousti
+
+
+
+https://awx.ciirc.cvut.cz/api/v2/jobs/533/
+
+
+
+# Komentar k tomuto playbooku, co se ma udelat, kdyz selze
+# se musi nastavit v AWX, ne tady. I kdyz tady by to bylo lepsi, ale nevim
+# jak toho docilit. Mozne reseni je pouzit lokalni vars pro playbook. Ty lze
+# pouzit i pro tasky, takze by ovladaci js mohl z teto definice vypsat
+# instrukce, co se ma v pripade neuspechu udelat. 
